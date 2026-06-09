@@ -99,7 +99,7 @@ From **spark1** only:
 This script:
 1. SSHs into spark2 and starts the container there
 2. Starts the container on spark1
-3. Polls `http://127.0.0.1:8888/v1/models` until the API is ready (up to ~20 minutes)
+3. Polls `http://127.0.0.1:8000/v1/models` until the API is ready (up to ~20 minutes)
 
 ### 5. Stop the server
 
@@ -111,12 +111,12 @@ From **spark1** only:
 
 ## API Usage
 
-Once running, the OpenAI-compatible vLLM API is available on both nodes at `http://localhost:8888`.
+Once running, the OpenAI-compatible vLLM API is available on both nodes at `http://localhost:8000`.
 
 ### Chat completion (with reasoning)
 
 ```bash
-curl http://127.0.0.1:8888/v1/chat/completions \
+curl http://127.0.0.1:8000/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{
     "model": "deepseek-v4-flash",
@@ -130,7 +130,7 @@ curl http://127.0.0.1:8888/v1/chat/completions \
 ### Streaming
 
 ```bash
-curl http://127.0.0.1:8888/v1/chat/completions \
+curl http://127.0.0.1:8000/v1/chat/completions \
   -H "Content-Type: application/json" \
   -d '{
     "model": "deepseek-v4-flash",
@@ -154,7 +154,7 @@ The server is configured with `--tool-call-parser deepseek_v4` and `--enable-aut
 │  ┌───────────────────┐  │                          │  ┌───────────────────┐  │
 │  │ vLLM container    │  │                          │  │ vLLM container    │  │
 │  │ TP rank 0 (GPU 0) │  │                          │  │ TP rank 1 (GPU 1) │  │
-│  │ Port 8888 (API)   │  │                          │  │ Port 8888 (API)   │  │
+│  │ Port 8000 (API)   │  │                          │  │ Port 8000 (API)   │  │
 │  └───────────────────┘  │                          │  └───────────────────┘  │
 └─────────────────────────┘                          └─────────────────────────┘
 ```

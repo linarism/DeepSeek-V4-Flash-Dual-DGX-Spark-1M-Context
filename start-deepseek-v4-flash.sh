@@ -22,7 +22,7 @@ fi
 
 : "${WORKER_HOST:?WORKER_HOST must be set in .env}"
 
-API_URL="http://127.0.0.1:8888/v1/models"
+API_URL="http://127.0.0.1:8000/v1/models"
 
 cd "$SCRIPT_DIR"
 
