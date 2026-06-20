@@ -2,8 +2,14 @@
 
 Deploy [DeepSeek-V4-Flash](https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash) — a Mixture-of-Experts (MoE) reasoning model — across **two NVIDIA DGX Spark** nodes with **1 million token context length**, InfiniBand interconnect, and FP8 KV-cache.
 
-
+<p>
+<a href="https://x.com/MiaAI_lab" target="_blank">
+  <img src="https://img.shields.io/badge/Follow%20me%20on%20X-000000?style=for-the-badge&logo=x&logoColor=white" alt="Follow Mia on X" />
+</a>
+</p>
+<p>
 <a href='https://ko-fi.com/Z8Z3SPLOD' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://storage.ko-fi.com/cdn/kofi6.png?v=6' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+</p>
 
 ## Overview
 
