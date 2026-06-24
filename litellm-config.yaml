@@ -1,0 +1,18 @@
+model_list:
+  - model_name: deepseek-v4-flash
+    litellm_params:
+      model: openai/deepseek-v4-flash
+      api_base: http://127.0.0.1:8000/v1
+      api_key: sk-local-vllm
+    model_info:
+      max_input_tokens: 1000000
+      max_output_tokens: 32768
+
+litellm_settings:
+  request_timeout: 1800
+  num_retries: 0
+  drop_params: true
+
+general_settings:
+  master_key: sk-local-vllm
+  disable_spend_logs: true

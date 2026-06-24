@@ -19,10 +19,10 @@ fi
 
 cd "$SCRIPT_DIR"
 
-echo "Stopping head on spark1..."
-docker compose down || true
+echo "Stopping head..."
+docker compose --env-file head.env down || true
 
 echo "Stopping worker on ${WORKER_HOST}..."
-ssh "${WORKER_HOST}" "cd '${SCRIPT_DIR}' && docker compose down" || true
+ssh "${WORKER_HOST}" "cd '${SCRIPT_DIR}' && docker compose --env-file worker.env down" || true
 
 echo "DeepSeek V4 Flash stopped."

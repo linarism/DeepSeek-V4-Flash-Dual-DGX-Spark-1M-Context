@@ -27,10 +27,13 @@ API_URL="http://127.0.0.1:8000/v1/models"
 cd "$SCRIPT_DIR"
 
 echo "Starting worker on ${WORKER_HOST}..."
-ssh "${WORKER_HOST}" "cd '${SCRIPT_DIR}' && docker compose up -d"
+ssh "${WORKER_HOST}" "cd '${SCRIPT_DIR}' && docker compose --env-file worker.env up -d"
 
-echo "Starting head on spark1..."
-docker compose up -d
+echo "Waiting 12s before starting head..."
+sleep 12
+
+echo "Starting head..."
+docker compose --env-file head.env up -d
 
 echo "Waiting for vLLM API..."
 for _ in $(seq 1 80); do

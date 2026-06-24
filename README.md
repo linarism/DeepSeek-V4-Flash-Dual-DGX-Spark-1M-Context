@@ -178,9 +178,9 @@ The server is configured with `--tool-call-parser deepseek_v4` and `--enable-aut
 | `--pipeline-parallel-size` | `1` | No pipeline parallelism |
 | `--kv-cache-dtype` | `fp8` | FP8 KV cache for memory savings |
 | `--max-model-len` | `1000000` | 1M token context |
-| `--max-num-seqs` | `6` | Max concurrent sequences |
+| `--max-num-seqs` | `4` | Max concurrent sequences |
 | `--block-size` | `256` | PagedAttention block size |
-| `--gpu-memory-utilization` | `0.82` | GPU memory budget |
+| `--gpu-memory-utilization` | `0.9` | GPU memory budget |
 | `--enable-prefix-caching` | enabled | Reuse KV cache across requests |
 | `--speculative-config` | MTP, 2 tokens | Multi-Token Prediction |
 | `--distributed-executor-backend` | `mp` | Multi-process backend |
@@ -197,10 +197,19 @@ If you need to rebuild or use a different image, update the `image:` field in `d
 | File | Purpose |
 |------|---------|
 | `docker-compose.yml` | Container definition with volume mounts, env vars, and entrypoint |
+| `head.env` / `worker.env` | Per-node env for head and worker (see `node3.env` for 3rd node) |
 | `.env.example` | Template for environment configuration |
-| `start-deepseek-v4-flash.sh` | Start server on both nodes |
+| `start-deepseek-v4-flash.sh` | Start server on both nodes (manual) |
 | `stop-deepseek-v4-flash.sh` | Stop server on both nodes |
+| `cluster-launch.sh` | Systemd launcher with RoCE checks and retries |
+| `sync-cluster.sh` | Rsync config to worker and node3 |
+| `install-systemd-service.sh` | Install `deepseek-v4-flash-1m.service` |
+| `litellm-config.yaml` | Optional LiteLLM proxy on `:4000` |
+| `docs/CLUSTER.md` | **Cluster network, 3-node findings, NCCL notes** |
 | `.gitignore` | Files excluded from version control |
+
+> For Promax GB10 3-node ring setup, RoCE addressing, and why TP=3/PP=3 fail for
+> DeepSeek V4 Flash, see **[docs/CLUSTER.md](docs/CLUSTER.md)**.
 
 ## Troubleshooting
 
