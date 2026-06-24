@@ -18,6 +18,8 @@ FILES=(
   stop-deepseek-v4-flash.sh
   cluster-launch.sh
   run-forum-benchmark.sh
+  run-clock-power-bench.sh
+  install-gpu-clock-cap.sh
 )
 
 sync_one() {

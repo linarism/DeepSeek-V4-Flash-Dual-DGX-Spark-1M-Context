@@ -183,6 +183,54 @@ If shorter context is acceptable, test:
 
 Requires verifying single-GPU memory at target `max-model-len`. Not validated on this cluster.
 
+## GPU clock cap (2000 MHz)
+
+NVIDIA forum testing on GB10 shows capping graphics clock to **2000 MHz** cuts power
+~40% with minimal throughput loss on memory-bound decode workloads
+([forum 372662](https://forums.developer.nvidia.com/t/cooler-gb10-temps-almost-no-performance-lost/372662)).
+
+We validated this on our 2-node DeepSeek V4 Flash stack — see
+[benchmark-results/.../REPORT.md](../benchmark-results/deepseek-v4-flash/clock-power-20260624094115/REPORT.md):
+
+| Metric | Stock | 2000 MHz |
+|--------|-------|----------|
+| Cluster avg GPU power | 65.8 W | 37.5 W (−43%) |
+| Decode c1 (tg128) | 36.7 tok/s | 34.7 tok/s (−5.6%) |
+| Peak GPU temp | 62 °C | 58 °C |
+
+### Install (persistent across reboot)
+
+From HEAD, installs on **head + worker** (inference nodes):
+
+```bash
+./install-gpu-clock-cap.sh
+```
+
+Optional third node: `INSTALL_NODE3=1 ./install-gpu-clock-cap.sh`
+
+This creates `nvidia-gpu-clock-cap.service`:
+
+- **After** `nvidia-persistenced.service`
+- Runs `nvidia-smi -pm 1 && nvidia-smi -lgc 0,2000` on boot
+- Config: `/etc/default/nvidia-gpu-clock-cap` (`GPU_CLOCK_MAX_MHZ=2000`)
+
+Check status:
+
+```bash
+systemctl status nvidia-gpu-clock-cap
+nvidia-smi --query-gpu=clocks.current.graphics,power.draw,temperature.gpu --format=csv
+```
+
+Restore stock clocks (disable cap):
+
+```bash
+sudo systemctl stop nvidia-gpu-clock-cap
+sudo systemctl disable nvidia-gpu-clock-cap
+sudo nvidia-smi -rgc
+```
+
+Re-run A/B benchmark: `./run-clock-power-bench.sh`
+
 ## LiteLLM proxy
 
 Optional OpenAI-compatible proxy on `:4000`:
@@ -213,5 +261,7 @@ Config: `litellm-config.yaml` → forwards to `http://127.0.0.1:8000/v1`.
 | `cluster-launch.sh` | Systemd launcher (2- or 3-node aware) |
 | `sync-cluster.sh` | Rsync repo to worker + node3 |
 | `install-systemd-service.sh` | Install systemd unit + defaults |
+| `install-gpu-clock-cap.sh` | Persistent 2000 MHz GPU clock cap (head + worker) |
+| `run-clock-power-bench.sh` | A/B llama-benchy + power logging |
 | `litellm-config.yaml` | LiteLLM proxy config |
 | `docs/CLUSTER.md` | This document |

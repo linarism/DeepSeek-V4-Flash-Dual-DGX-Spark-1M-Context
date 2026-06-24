@@ -204,6 +204,8 @@ If you need to rebuild or use a different image, update the `image:` field in `d
 | `cluster-launch.sh` | Systemd launcher with RoCE checks and retries |
 | `sync-cluster.sh` | Rsync config to worker and node3 |
 | `install-systemd-service.sh` | Install `deepseek-v4-flash-1m.service` |
+| `install-gpu-clock-cap.sh` | Persistent GB10 GPU clock cap (2000 MHz) |
+| `run-clock-power-bench.sh` | Benchmark throughput vs power at stock vs capped clocks |
 | `litellm-config.yaml` | Optional LiteLLM proxy on `:4000` |
 | `docs/CLUSTER.md` | **Cluster network, 3-node findings, NCCL notes** |
 | `.gitignore` | Files excluded from version control |
